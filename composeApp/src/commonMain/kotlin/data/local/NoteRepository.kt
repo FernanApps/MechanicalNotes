@@ -132,7 +132,7 @@ private fun generateSampleNotes(): List<Note> {
 }
 
 
-class NoteRepositoryImp: NoteRepository {
+class NoteRepositoryImp(): NoteRepository {
     override fun getAllNotes(): List<Note>{
         return generateSampleNotes()
     }
