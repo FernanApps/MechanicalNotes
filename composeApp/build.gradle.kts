@@ -14,7 +14,7 @@ plugins {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
+    /*@OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
         browser {
@@ -30,7 +30,13 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
+    js (IR){
+        browser()
+        binaries.executable()
+    }
+    */
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -42,7 +48,7 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -50,6 +56,10 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.coroutines.android)
+
+            //implementation(libs.firebase.auth)
+            api(libs.androidx.startup)
+
 
         }
         commonMain.dependencies {
@@ -67,6 +77,10 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
 
             implementation(libs.kotlinx.coroutines.core)
+
+            implementation(libs.firebase.auth)
+
+            implementation(libs.lifecycle.viewmodel)
 
 
         }
@@ -113,6 +127,9 @@ android {
     dependencies {
         debugImplementation(compose.uiTooling)
     }
+}
+dependencies {
+    implementation(libs.firebase.common.ktx)
 }
 
 compose.desktop {

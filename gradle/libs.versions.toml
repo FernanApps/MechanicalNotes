@@ -22,7 +22,6 @@ koin = "3.6.0-alpha3"
 koinCompose = "3.6.0-alpha3"
 koinComposeMultiplatform = "1.2.0-alpha3"
 coroutines = "1.8.1"
-
 composeImageLoader = "1.8.1"
 window-size = "0.5.0"
 kotlinx-serialization = "1.6.2"
@@ -33,7 +32,9 @@ androidxRoom = "2.7.0-alpha01"
 datastoreVersion = "1.1.1"
 androidx-startup = "1.1.1"
 coil3 = "3.0.0-alpha06"
-ktor = "3.0.0-wasm2"
+ktor = "2.3.12"
+firebaseAuth = "1.11.1"
+firebaseCommonKtx = "21.0.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -76,6 +77,9 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebaseAuth" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
