@@ -17,3 +17,5 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 /composeApp/google-services.json
+/desing/DesingMechanicalNotes.ai
+/kotlin-js-store/yarn.lock

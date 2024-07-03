@@ -60,7 +60,6 @@ kotlin {
             //implementation(libs.firebase.auth)
             api(libs.androidx.startup)
 
-
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -68,6 +67,8 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
+            implementation(compose.animation)
+            implementation(compose.animationGraphics)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
@@ -78,15 +79,20 @@ kotlin {
 
             implementation(libs.kotlinx.coroutines.core)
 
+
+            //implementation(libs.lifecycle.viewmodel)
+            api(libs.navigation.compose)
+
             implementation(libs.firebase.auth)
 
-            implementation(libs.lifecycle.viewmodel)
 
 
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+
+            implementation("dev.gitlive:firebase-java-sdk:0.4.3")
 
         }
     }
