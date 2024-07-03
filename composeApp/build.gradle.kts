@@ -60,6 +60,10 @@ kotlin {
             //implementation(libs.firebase.auth)
             api(libs.androidx.startup)
 
+            // DI only in common now
+            //implementation(libs.koin.android)
+            //implementation(libs.koin.androidx.compose)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -85,6 +89,14 @@ kotlin {
 
             implementation(libs.firebase.auth)
 
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization.json)
+
+            // DI
+//            api(libs.koin.core)
+//            implementation(libs.koin.compose)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.composeVM)
 
 
         }

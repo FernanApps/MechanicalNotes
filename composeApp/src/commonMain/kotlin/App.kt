@@ -17,12 +17,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
+import di.appModule
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import mechanicalnotes.composeapp.generated.resources.Res
 import mechanicalnotes.composeapp.generated.resources.compose_multiplatform
+import org.koin.compose.KoinApplication
 import platform.getFirebaseManager
 import presentation.Screens
 import presentation.home.HomeScreen
@@ -33,49 +35,53 @@ import presentation.screens.splash.SplashScreen
 @Preview
 fun App() {
 
-    //getFirebaseManager().initialize()
-    MaterialTheme {
+    KoinApplication(application = {
+        modules(appModule())
+    }) {
 
-        val navController: NavHostController = rememberNavController()
-        val backStackEntry by navController.currentBackStackEntryAsState()
-        val currentScreen = Screens.valueOf(
-            backStackEntry?.destination?.route ?: Screens.Splash()
-        )
+        MaterialTheme {
+
+            val navController: NavHostController = rememberNavController()
+            val backStackEntry by navController.currentBackStackEntryAsState()
+            val currentScreen = Screens.valueOf(
+                backStackEntry?.destination?.route ?: Screens.Splash()
+            )
 
 
-        NavHost(
-            navController = navController,
-            startDestination = Screens.Splash(),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            composable(route = Screens.Splash()) {
+            NavHost(
+                navController = navController,
+                startDestination = Screens.Splash(),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                composable(route = Screens.Splash()) {
 
-                SplashScreen(
-                    onNavigate = {
-                        navController.navigate(Screens.Home())
-                    }
-                )
-            }
-            composable(route = Screens.Home()) {
-                HomeScreen()
-            }
-        }
-        /*
-        var showContent by remember { mutableStateOf(false) }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
+                    SplashScreen(
+                        onNavigate = {
+                            navController.navigate(Screens.Home())
+                        }
+                    )
+                }
+                composable(route = Screens.Home()) {
+                    HomeScreen()
                 }
             }
-        }
+            /*
+            var showContent by remember { mutableStateOf(false) }
+            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Button(onClick = { showContent = !showContent }) {
+                    Text("Click me!")
+                }
+                AnimatedVisibility(showContent) {
+                    val greeting = remember { Greeting().greet() }
+                    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(painterResource(Res.drawable.compose_multiplatform), null)
+                        Text("Compose: $greeting")
+                    }
+                }
+            }
 
-         */
+             */
+        }
     }
 }
 
