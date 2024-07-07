@@ -28,7 +28,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import mechanicalnotes.composeapp.generated.resources.Res
 import mechanicalnotes.composeapp.generated.resources.compose_multiplatform
 import org.koin.compose.KoinApplication
+import org.koin.compose.viewmodel.koinViewModel
 import platform.getFirebaseManager
+import presentation.NoteViewModel
 import presentation.Screens
 import presentation.screens.details.DetailScreen
 import presentation.screens.details.bundleKeyNoteId
@@ -60,6 +62,7 @@ fun App() {
 
              */
 
+            val viewModel: NoteViewModel = koinViewModel()
 
             NavHost(
                 navController = navController,
@@ -77,14 +80,14 @@ fun App() {
                 composable(route = Screens.Home()) {
                     HomeScreen(onNavigateDetails = { id ->
                         navController.navigate(Screens.Details.withArgs(id))
-                    })
+                    }, viewModel)
                 }
 
                 composable(route = Screens.Details()) { it ->
                     val id = it.arguments!!.getString(bundleKeyNoteId)!!.toLong()
                     DetailScreen(id, onBack = {
                         navController.popBackStack()
-                    })
+                    }, viewModel)
                 }
             }
             /*

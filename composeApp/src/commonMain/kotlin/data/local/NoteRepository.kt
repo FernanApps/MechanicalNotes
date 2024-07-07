@@ -107,6 +107,7 @@ private fun generateSampleNotes(): List<Note> {
             )
         ),
         Note(
+            id = 1,
             date = LocalDateTime.parse("2024-07-13T00:00:00"),
             vehicle = "EGB 244 MERCEDES cisterna",
             anomalies = listOf(
@@ -134,6 +135,6 @@ private fun generateSampleNotes(): List<Note> {
 
 class NoteRepositoryImp(): NoteRepository {
     override fun getAllNotes(): List<Note>{
-        return generateSampleNotes()
+        return generateSampleNotes().map { it.copy(id = (100..200).random().toLong()) }
     }
 }

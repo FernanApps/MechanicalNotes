@@ -2,6 +2,7 @@ package utils
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -11,6 +12,14 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import utils.TimeExt.now
+
+
+fun convertMillisToDate(millis: Long): String {
+    val instant = Instant.fromEpochMilliseconds(millis)
+    val dateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+    return "${dateTime.dayOfMonth}/${dateTime.monthNumber}/${dateTime.year}"
+}
+
 
 /**
  * @param dateString -> format is "2023-12-15"
@@ -40,7 +49,48 @@ fun getDateFormat(dateString: String): String {
 }
 
 
+/**
+ * @param dateString -> formato "2023-12-15"
+ * @return 23 de noviembre de 1963
+ */
+fun getDateFormatSpanish(dateString: String): String {
+    val date = getDate(dateString) ?: return ""
+    val knownDate = LocalDate(date.first, date.second, date.third)
+
+    val months = arrayOf(
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    )
+
+    val name = months[date.second - 1]
+    val dateNow = with(knownDate) {
+        "${
+            name.lowercase()
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+        } $dayOfMonth, $year"
+    }
+    return dateNow
+}
+
+fun currentTimeMillis(): Long {
+    return Clock.System.now().toEpochMilliseconds()
+}
+
+
+
 object TimeExt {
+
+
+    fun LocalDateTime.toTimeToMillis(): Long {
+        val timeZone = TimeZone.currentSystemDefault()
+        val instant: Instant = this.toInstant(timeZone)
+        return instant.toEpochMilliseconds()
+    }
+
+    fun convertMillisToDate(millis: Long): LocalDateTime {
+        val instant = Instant.fromEpochMilliseconds(millis)
+        return instant.toLocalDateTime(TimeZone.currentSystemDefault())
+    }
 
 
     fun LocalDateTime.Companion.now(): LocalDateTime {
@@ -112,8 +162,13 @@ fun main() {
     val dateNow2 = with(now) {
         "${dayOfMonth}/${month}/$year - $hour : $minute : $second "
     }
+
+    println(now)
     println(dateNow)
     println(dateNow2)
 
+    println(getDate(now.toString()))
+    println(getDateFormat(now.toString()))
+    println(getDateFormatSpanish(now.toString()))
 
 }
