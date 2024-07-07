@@ -12,6 +12,7 @@ androidx-espresso-core = "3.5.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.1.5"
 compose-plugin = "1.6.10"
+firebaseJavaSdk = "0.4.3"
 junit = "4.13.2"
 kotlin = "2.0.0"
 lifecycle-viewmodel = "2.8.1"
@@ -37,6 +38,7 @@ firebaseAuth = "1.11.1"
 firebaseCommonKtx = "21.0.0"
 
 [libraries]
+firebase-java-sdk = { module = "dev.gitlive:firebase-java-sdk", version.ref = "firebaseJavaSdk" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

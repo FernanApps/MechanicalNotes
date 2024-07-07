@@ -98,13 +98,23 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
 
+            implementation(libs.material.kolor)
+
 
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.firebase.java.sdk)
 
-            implementation("dev.gitlive:firebase-java-sdk:0.4.3")
+        }
+
+        all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("org.koin.core.annotation.KoinExperimentalAPI")
+            languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+
 
         }
     }
