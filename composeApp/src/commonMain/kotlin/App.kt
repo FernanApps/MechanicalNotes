@@ -10,11 +10,14 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.materialkolor.PaletteStyle
+import com.materialkolor.rememberDynamicColorScheme
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import di.appModule
@@ -27,9 +30,13 @@ import mechanicalnotes.composeapp.generated.resources.compose_multiplatform
 import org.koin.compose.KoinApplication
 import platform.getFirebaseManager
 import presentation.Screens
-import presentation.home.HomeScreen
+import presentation.screens.details.DetailScreen
+import presentation.screens.details.bundleKeyNoteId
+import presentation.screens.home.HomeScreen
 import presentation.screens.splash.SplashScreen
 
+
+internal val seedColor = Color(0xff303F9F)
 
 @Composable
 @Preview
@@ -39,13 +46,19 @@ fun App() {
         modules(appModule())
     }) {
 
-        MaterialTheme {
+        val colorScheme = rememberDynamicColorScheme(seedColor, false, style = PaletteStyle.Vibrant)
+
+
+        MaterialTheme(colorScheme = colorScheme) {
 
             val navController: NavHostController = rememberNavController()
             val backStackEntry by navController.currentBackStackEntryAsState()
+            /*
             val currentScreen = Screens.valueOf(
                 backStackEntry?.destination?.route ?: Screens.Splash()
             )
+
+             */
 
 
             NavHost(
@@ -62,7 +75,16 @@ fun App() {
                     )
                 }
                 composable(route = Screens.Home()) {
-                    HomeScreen()
+                    HomeScreen(onNavigateDetails = { id ->
+                        navController.navigate(Screens.Details.withArgs(id))
+                    })
+                }
+
+                composable(route = Screens.Details()) { it ->
+                    val id = it.arguments!!.getString(bundleKeyNoteId)!!.toLong()
+                    DetailScreen(id, onBack = {
+                        navController.popBackStack()
+                    })
                 }
             }
             /*
