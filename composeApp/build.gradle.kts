@@ -84,7 +84,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
 
 
-            //implementation(libs.lifecycle.viewmodel)
+            implementation(libs.lifecycle.viewmodel)
+            implementation(libs.lifecycle.runtime.compose)
             api(libs.navigation.compose)
 
             implementation(libs.firebase.auth)
