@@ -11,6 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,6 +30,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import mechanicalnotes.composeapp.generated.resources.Res
 import mechanicalnotes.composeapp.generated.resources.compose_multiplatform
 import org.koin.compose.KoinApplication
+import org.koin.compose.currentKoinScope
 import org.koin.compose.viewmodel.koinViewModel
 import platform.getFirebaseManager
 import presentation.NoteViewModel
@@ -62,7 +65,7 @@ fun App() {
 
              */
 
-            val viewModel: NoteViewModel = koinViewModel()
+            val viewModel: NoteViewModel = koinViewModel<NoteViewModel>()
 
             NavHost(
                 navController = navController,
@@ -109,4 +112,5 @@ fun App() {
         }
     }
 }
+
 

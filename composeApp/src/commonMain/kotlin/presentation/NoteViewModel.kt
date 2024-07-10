@@ -11,9 +11,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import utils.TimeExt.convertMillisToDate
 
-class NoteViewModel : ViewModel(), KoinComponent {
+class NoteViewModel(private val repository: NoteRepository) : ViewModel() /*, KoinComponent  */{
 
-    private val repository: NoteRepository by inject()
+    //private val repository: NoteRepository by inject()
 
     private val _notes = MutableStateFlow<List<Note>>(emptyList())
 
