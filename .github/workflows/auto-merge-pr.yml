@@ -1,0 +1,30 @@
+name: Auto Merge Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+
+jobs:
+  merge-pull-request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Auto Merge Pull Request
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr_number = context.payload.pull_request.number;
+            const { owner, repo } = context.repo;
+            await github.pulls.merge({
+              owner,
+              repo,
+              pull_number: pr_number,
+              merge_method: 'merge'
+            });
