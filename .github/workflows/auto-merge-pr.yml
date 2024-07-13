@@ -25,8 +25,8 @@ jobs:
           gh_pr_up() {
             local title="$1"
             local body="$2"
-            gh pr create --base main --head dev --title "$title" --body "$body" || \
-            gh pr edit --base main --head dev --title "$title" --body "$body"
+            gh pr create --base main --title "$title" --body "$body" || \
+            gh pr edit --base main --title "$title" --body "$body"
           }
           COMMIT_MSG=$(echo "${{ steps.commit_message.outputs.message }}")
           gh_pr_up "$COMMIT_MSG" "Description"
