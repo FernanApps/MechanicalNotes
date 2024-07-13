@@ -21,8 +21,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const pr_number = context.payload.pull_request.number;
-            const { owner, repo } = context.repo;
-            await github.pulls.merge({
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            await github.rest.pulls.merge({
               owner,
               repo,
               pull_number: pr_number,
