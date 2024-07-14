@@ -84,7 +84,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.lifecycle.viewmodel)
-            //implementation(libs.lifecycle.runtime.compose)
+            implementation(libs.lifecycle.runtime.compose)
             api(libs.navigation.compose)
 
             implementation(libs.firebase.auth)
@@ -104,9 +104,8 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.firebase.java.sdk)
+            //implementation(libs.firebase.java.sdk)
             implementation(libs.kotlinx.coroutines.swing)
-
 
         }
 
