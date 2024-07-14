@@ -12,6 +12,7 @@ enum class Screens(
     val selectedIcon: ImageVector? = null,
 ) {
     Splash,
+    Login,
     Home,
     Details(args = listOf(bundleKeyNoteId))
     ;

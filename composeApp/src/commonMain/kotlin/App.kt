@@ -9,17 +9,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebasePlatform
 import com.materialkolor.PaletteStyle
 import com.materialkolor.rememberDynamicColorScheme
 import di.appModule
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
+import platform.getFirebaseManager
+import presentation.LoginViewModel
 import presentation.NoteViewModel
 import presentation.Screens
 import presentation.screens.details.DetailScreen
 import presentation.screens.details.bundleKeyNoteId
 import presentation.screens.home.HomeScreen
+import presentation.screens.login.LoginScreen
 import presentation.screens.splash.SplashScreen
 
 
@@ -29,6 +33,14 @@ internal val seedColor = Color(0xff303F9F)
 @Preview
 fun App() {
 
+    FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
+        val storage = mutableMapOf<String, String>()
+        override fun store(key: String, value: String) = storage.set(key, value)
+        override fun retrieve(key: String) = storage[key]
+        override fun clear(key: String) { storage.remove(key) }
+        override fun log(msg: String) = println(msg)
+    })
+    //getFirebaseManager().initialize()
     KoinApplication(application = {
         modules(appModule())
     }) {
@@ -48,6 +60,7 @@ fun App() {
              */
 
             val viewModel: NoteViewModel = koinViewModel<NoteViewModel>()
+            val loginViewModel: LoginViewModel = koinViewModel<LoginViewModel>()
 
             NavHost(
                 navController = navController,
@@ -55,13 +68,22 @@ fun App() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 composable(route = Screens.Splash()) {
-
                     SplashScreen(
                         onNavigate = {
-                            navController.navigate(Screens.Home())
+                            navController.navigate(Screens.Login())
                         }
                     )
                 }
+
+                composable(route = Screens.Login()) {
+                    LoginScreen(
+                        onSuccess = {
+                            navController.navigate(Screens.Home())
+                        },
+                        loginViewModel
+                    )
+                }
+
                 composable(route = Screens.Home()) {
                     HomeScreen(onNavigateDetails = { id ->
                         navController.navigate(Screens.Details.withArgs(id))

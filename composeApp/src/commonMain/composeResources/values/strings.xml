@@ -3,5 +3,9 @@
     <string name="app_name">Mechanical Note</string>
     <string name="cancel">Cancelar</string>
     <string name="ok">Ok</string>
+    <string name="user">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="logout">Salir</string>
 
 </resources>

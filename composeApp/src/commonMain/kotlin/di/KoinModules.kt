@@ -15,21 +15,29 @@ import domain.use_cases.GetChaptersWithPercentageUseCase
 */
 
 import data.local.NoteRepositoryImp
+import data.remote.AuthRepositoryImp
+import domain.repository.AuthRepository
 import domain.repository.NoteRepository
 import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.core.scope.get
 import org.koin.dsl.module
+import presentation.LoginViewModel
 import presentation.NoteViewModel
 
 val provideRepositoryModule = module {
     single<NoteRepository> { NoteRepositoryImp() }
+    single<AuthRepository> { AuthRepositoryImp() }
+
 }
 
 val provideViewModelModule = module {
     //viewModelOf(::NoteViewModel)
     viewModel {
         NoteViewModel(get())
+    }
+    viewModel {
+        LoginViewModel(get())
     }
 }
 

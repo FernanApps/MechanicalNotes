@@ -84,7 +84,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.lifecycle.viewmodel)
-            implementation(libs.lifecycle.runtime.compose)
+            //implementation(libs.lifecycle.runtime.compose)
             api(libs.navigation.compose)
 
             implementation(libs.firebase.auth)
@@ -104,17 +104,19 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            api(libs.kotlinx.coroutines.swing)
             implementation(libs.firebase.java.sdk)
+            implementation(libs.kotlinx.coroutines.swing)
+
 
         }
+
+
 
         all {
             languageSettings.optIn("kotlin.RequiresOptIn")
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             languageSettings.optIn("org.koin.core.annotation.KoinExperimentalAPI")
             languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
-
 
         }
     }
