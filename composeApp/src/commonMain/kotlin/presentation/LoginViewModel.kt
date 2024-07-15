@@ -1,12 +1,9 @@
 package presentation
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import data.remote.AuthRepositoryImp
-import domain.model.Note
+import androidx.lifecycle.viewmodel.compose.viewModel
 import domain.model.User
 import domain.repository.AuthRepository
-import domain.repository.NoteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,10 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.datetime.LocalDateTime
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import utils.TimeExt.convertMillisToDate
+import kotlinx.coroutines.launch
 
 
 data class LoginUiState(
@@ -45,9 +39,9 @@ class LoginViewModel(
     private val _isProcessing = MutableStateFlow(false)
     val isProcessing = _isProcessing.asStateFlow()
 
-    private val isButtonEnabled: StateFlow<Boolean> = combine(uiState) { states ->
+    val isButtonEnabled: StateFlow<Boolean> = combine(uiState) { states ->
         val state = states.first()
-        state.email.isNotBlank() && state.password.isNotBlank()
+        state.email.isNotBlank() && isCorrectEmail(state.email) && state.password.isNotBlank()
     }.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), false
     )
@@ -63,6 +57,13 @@ class LoginViewModel(
                 _currentUser.value = it
             }
         }
+        println("isAuthenticated " + authService.isAuthenticated)
+
+    }
+
+    private fun isCorrectEmail(email: String): Boolean{
+        val emailPattern = """^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"""
+        return emailPattern.toRegex().matches(email)
     }
 
 
@@ -90,11 +91,22 @@ class LoginViewModel(
             return
         }
 
-        launchWithCatchingException {
+        viewModelScope.launch {
             _isProcessing.value = true
             //val result = authService.createUser(_uiState.value.email, _uiState.value.password)
-            authService.authenticate(_uiState.value.email, _uiState.value.password)
-            _isProcessing.value = false
+            try{
+                authService.authenticate(_uiState.value.email, _uiState.value.password)
+                //_isProcessing.value = false
+            } catch (e: Exception){
+                println(e.message)
+                e.printStackTrace()
+                _emailError.value = true
+                _passwordError.value = true
+            } finally {
+                _isProcessing.value = false
+
+            }
+
         }
 
     }

@@ -7,5 +7,7 @@
     <string name="password">Contraseña</string>
     <string name="login">Iniciar Sesión</string>
     <string name="logout">Salir</string>
+    <string name="email">Correo</string>
+    <string name="email_or_password">Error en correo o contraseña</string>
 
 </resources>

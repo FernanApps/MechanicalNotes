@@ -1,10 +1,21 @@
 package platform
 
+import com.google.firebase.FirebasePlatform
 import dev.gitlive.firebase.FirebaseOptions
 
-interface FirebaseManager {
 
-    fun initialize()
+
+object FirebaseManager {
+    fun init(){
+        FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
+            val storage = mutableMapOf<String, String>()
+            override fun store(key: String, value: String) = storage.set(key, value)
+            override fun retrieve(key: String) = storage[key]
+            override fun clear(key: String) { storage.remove(key) }
+            override fun log(msg: String) = println(msg)
+        })
+        initializeFirebase()
+    }
 }
 
 internal val firebaseProjectId = "notes-mechanical"
@@ -18,4 +29,4 @@ internal val firebaseOptions = FirebaseOptions(
 )
 
 
-expect fun getFirebaseManager(): FirebaseManager
+expect fun initializeFirebase()

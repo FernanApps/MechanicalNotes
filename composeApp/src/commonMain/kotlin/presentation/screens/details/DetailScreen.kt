@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 //import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mechanicalnotes.composeapp.generated.resources.Res
 import mechanicalnotes.composeapp.generated.resources.cancel
@@ -49,7 +50,7 @@ fun DetailScreen(
     viewModel: NoteViewModel
 ) {
 
-    val note by viewModel.currentNote.collectAsState()
+    val note by viewModel.currentNote.collectAsStateWithLifecycle()
 
     var date by remember {
         mutableStateOf("Open date picker dialog")

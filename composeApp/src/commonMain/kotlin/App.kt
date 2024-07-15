@@ -16,7 +16,6 @@ import di.appModule
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
-import platform.getFirebaseManager
 import presentation.LoginViewModel
 import presentation.NoteViewModel
 import presentation.Screens
@@ -33,13 +32,7 @@ internal val seedColor = Color(0xff303F9F)
 @Preview
 fun App() {
 
-    FirebasePlatform.initializeFirebasePlatform(object : FirebasePlatform() {
-        val storage = mutableMapOf<String, String>()
-        override fun store(key: String, value: String) = storage.set(key, value)
-        override fun retrieve(key: String) = storage[key]
-        override fun clear(key: String) { storage.remove(key) }
-        override fun log(msg: String) = println(msg)
-    })
+
     //getFirebaseManager().initialize()
     KoinApplication(application = {
         modules(appModule())

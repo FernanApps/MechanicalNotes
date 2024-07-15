@@ -124,10 +124,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import domain.model.User
 import mechanicalnotes.composeapp.generated.resources.Res
 import mechanicalnotes.composeapp.generated.resources.foreground
 import mechanicalnotes.composeapp.generated.resources.password
+import mechanicalnotes.composeapp.generated.resources.email
+import mechanicalnotes.composeapp.generated.resources.login
+import mechanicalnotes.composeapp.generated.resources.logout
+import mechanicalnotes.composeapp.generated.resources.email_or_password
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -139,12 +144,12 @@ fun LoginScreen(
     viewModel: LoginViewModel,
 ) {
 
-    val uiState by viewModel.uiState.collectAsState()
-    val emailError by viewModel.emailError.collectAsState()
-    val passwordError by viewModel.passwordError.collectAsState()
-    val isProcessing by viewModel.isProcessing.collectAsState()
-    val isButtonEnabled by viewModel.isProcessing.collectAsState()
-    val currentUser by viewModel.currentUser.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val emailError by viewModel.emailError.collectAsStateWithLifecycle()
+    val passwordError by viewModel.passwordError.collectAsStateWithLifecycle()
+    val isProcessing by viewModel.isProcessing.collectAsStateWithLifecycle()
+    val isButtonEnabled by viewModel.isButtonEnabled.collectAsStateWithLifecycle()
+    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
 
     LaunchedEffect(true){
         viewModel.checkCurrentUser()
@@ -157,9 +162,11 @@ fun LoginScreen(
         onPasswordChange = viewModel::onPasswordChange,
         onSignInClick = { viewModel.onSignInClick() },
         isProcessing = isProcessing,
+        isButtonEnabled = isButtonEnabled,
         currentUser = currentUser,
         isError = emailError || passwordError,
-        onSignOut = viewModel::onSignOut
+        onSignOut = viewModel::onSignOut,
+        onSignIn = onSuccess
     )
 
 }
@@ -173,10 +180,19 @@ fun LoginScreenContent(
     onPasswordChange: (String) -> Unit,
     onSignInClick: () -> Unit,
     isProcessing: Boolean,
+    isButtonEnabled: Boolean,
     currentUser: User?,
     isError: Boolean,
     onSignOut: () -> Unit,
-) {
+    onSignIn: () -> Unit,
+
+    ) {
+
+
+    if(currentUser != null && !currentUser.isAnonymous){
+        //onSignIn()
+    }
+
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
@@ -201,7 +217,7 @@ fun LoginScreenContent(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(), value = uiState.email, label = {
-                    Text("Email")
+                    Text(stringResource(Res.string.email))
                 }, onValueChange = onEmailChange
             )
 
@@ -223,15 +239,18 @@ fun LoginScreenContent(
                 CircularProgressIndicator()
             } else {
                 Button(
-                    modifier = Modifier.fillMaxWidth().height(48.dp), onClick = onSignInClick
+                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    onClick = onSignInClick,
+                    enabled = isButtonEnabled
                 ) {
-                    Text(stringResource(Res.string.password))
+                    Text(stringResource(Res.string.login))
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             //This is just for example, Ideally user will go to some other screen after login
+            /*
             AnimatedVisibility(currentUser != null && !currentUser.isAnonymous) {
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                     Text("Login Successful", color = Color.Green.copy(alpha = 0.5f))
@@ -242,14 +261,15 @@ fun LoginScreenContent(
                         onClick = {
                             onSignOut()
                         }) {
-                        Text("Log Out")
+                        Text(stringResource(Res.string.logout))
                     }
                 }
             }
+            */
 
-            AnimatedVisibility(isError) {
+            AnimatedVisibility(isError && !isProcessing) {
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-                    Text("Error in email or password!", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(Res.string.email_or_password), color = MaterialTheme.colorScheme.error)
                 }
             }
 

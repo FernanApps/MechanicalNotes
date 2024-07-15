@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 //import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import domain.model.Note
 import mechanicalnotes.composeapp.generated.resources.Res
@@ -49,8 +50,8 @@ fun HomeScreen(
     onNavigateDetails: (id: Long) -> Unit,
     viewModel: NoteViewModel
 ) {
-    val notes by viewModel.notes.collectAsState()
-    val searchText by viewModel.searchText.collectAsState()
+    val notes by viewModel.notes.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
 
     var showSearchBar by remember {
         mutableStateOf(false)

@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel() : ViewModel() {
 
-  val coroutineContext = Dispatchers.Default + SupervisorJob() + CoroutineExceptionHandler { _, throwable ->
+  val coroutineContext = /*Dispatchers.Default +*/ SupervisorJob() + CoroutineExceptionHandler { _, throwable ->
     println("BaseViewModel: Error: ${throwable.message}")
     //show error message using snackbar for all errors
   }
